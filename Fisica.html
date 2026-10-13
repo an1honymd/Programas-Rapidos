@@ -58,6 +58,9 @@
     <button onclick="calculatePower()">Calculate Power</button>
     <button onclick="calculateSeriesResistor()">Calculate Series Resistance</button>
     <button onclick="calculateParallelResistor()">Calculate Parallel Resistance</button>
+    <button onclick="calculateCircuitResistance()">Calculate Circuit Resistance</button>
+    <button onclick="calculateCircuitPower()">Calculate Circuit Power</button>
+    <button onclick="calculateCircuitVoltage()">Calculate Circuit Voltage</button>
     <p>Current (A): <span id="current"></span></p>
     <p>Power (W): <span id="power"></span></p>
     <p>Series Resistance (Ω): <span id="seriesResistance"></span></p>
@@ -75,14 +78,13 @@
       const totalResistance = resistance1 + resistance2;
       const current = voltage / totalResistance;
       document.getElementById("current").innerText = current;
-      document.getElementById("circuitResistance").innerText = totalResistance;
+      document.getElementById("seriesResistance").innerText = totalResistance;
       document.getElementById("circuitPower").innerText = voltage * current;
       document.getElementById("circuitVoltage").innerText = voltage;
     }
     function calculatePower() {
-      const resistance = document.getElementById("resistor1").value;
-      const voltage = document.getElementById("voltage").value;
       const current = document.getElementById("current").innerText;
+      const voltage = document.getElementById("voltage").value;
       const power = voltage * current;
       document.getElementById("power").innerText = power;
       document.getElementById("circuitPower").innerText = power;
@@ -100,6 +102,22 @@
       const parallelResistance = (resistance1 * resistance2) / (resistance1 + resistance2);
       document.getElementById("parallelResistance").innerText = parallelResistance;
       document.getElementById("circuitResistance").innerText = parallelResistance;
+    }
+    function calculateCircuitResistance() {
+      const totalResistance = document.getElementById("seriesResistance").innerText || document.getElementById("parallelResistance").innerText || 0;
+      document.getElementById("circuitResistance").innerText = totalResistance;
+    }
+    function calculateCircuitPower() {
+      const voltage = document.getElementById("voltage").value;
+      const current = document.getElementById("current").innerText;
+      const circuitPower = voltage * current;
+      document.getElementById("circuitPower").innerText = circuitPower;
+    }
+    function calculateCircuitVoltage() {
+      const current = document.getElementById("current").innerText;
+      const circuitResistance = document.getElementById("circuitResistance").innerText;
+      const circuitVoltage = current * circuitResistance;
+      document.getElementById("circuitVoltage").innerText = circuitVoltage;
     }
   </script>
 </body>
