@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Electronics Circuit Simulator</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 50px;
+      background-color: #f0f0f0;
+      color: #333333;
+    }
+    .simulator {
+      text-align: center;
+      background-color: #ffffff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+
+
+
+    .simulator input[type="number"] {
+      width: 50px;
+      margin: 10px 10px 0 10px;
+      padding: 5px;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+    }
+
+
+
+    .simulator button {
+      margin: 10px 10px 0 10px;
+      padding: 5px 10px;
+      border: 1px solid #cccccc;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: #ffffff;
+      cursor: pointer;
+    }
+
+
+
+
+
+
+    .simulator button:hover {
+      background-color: #0056b3;
+    }
+    p {
+      margin: 10px;
+      color: #666666;
+    }
+    h1 {
+      margin: 0;
+      color: #333333;
+    }
+  </style>
+</head>
+<body>
+  <div class="simulator">
+    <h1>simulador de circuitos electronicos</h1>
+    <p>Enter values for the circuit elements:</p>
+    <input type="number" id="resistor1" placeholder="Resistor 1 (Ω)">
+    <input type="number" id="resistor2" placeholder="Resistor 2 (Ω)">
+    <input type="number" id="voltage" placeholder="Voltage (V)">
+    <button onclick="calculateCurrent()">Calculate Current</button>
+    <button onclick="calculatePower()">Calculate Power</button>
+    <button onclick="calculateSeriesResistor()">Calculate Series Resistance</button>
+    <button onclick="calculateParallelResistor()">Calculate Parallel Resistance</button>
+    <p>Current (A): <span id="current"></span></p>
+    <p>Power (W): <span id="power"></span></p>
+    <p>Series Resistance (Ω): <span id="seriesResistance"></span></p>
+    <p>Parallel Resistance (Ω): <span id="parallelResistance"></span></p>
+  </div>
+
+  <script>
+    function calculateCurrent() {
+      const resistance1 = document.getElementById("resistor1").value;
+      const resistance2 = document.getElementById("resistor2").value;
+      const voltage = document.getElementById("voltage").value;
+      const totalResistance = resistance1 + resistance2;
+      const current = voltage / totalResistance;
+      document.getElementById("current").innerText = current;
+    }
+    function calculatePower() {
+      const resistance = document.getElementById("resistor1").value;
+      const voltage = document.getElementById("voltage").value;
+      const current = document.getElementById("current").innerText;
+      const power = voltage * current;
+      document.getElementById("power").innerText = power;
+    }
+    function calculateSeriesResistor() {
+      const resistance1 = document.getElementById("resistor1").value;
+      const resistance2 = document.getElementById("resistor2").value;
+      const seriesResistance = resistance1 + resistance2;
+      document.getElementById("seriesResistance").innerText = seriesResistance;
+    }
+    function calculateParallelResistor() {
+      const resistance1 = document.getElementById("resistor1").value;
+      const resistance2 = document.getElementById("resistor2").value;
+      const parallelResistance = (resistance1 * resistance2) / (resistance1 + resistance2);
+      document.getElementById("parallelResistance").innerText = parallelResistance;
+    }
+  </script>
+</body>
+</html>
+     
+    }
+  </script>
+</body>
+</html>
