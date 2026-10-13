@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Simulador Circuitos - Física II</title>
+<style>
+body{font-family:Segoe UI,sans-serif;background:#0f172a;color:#e2e8f0;margin:0;padding:20px}
+.container{max-width:1000px;margin:auto}
+h1{color:#38bdf8;text-align:center}
+.card{background:#1e293b;padding:20px;border-radius:12px;margin-bottom:20px;box-shadow:0 4px 12px rgba(0,0,0,.3)}
+label{color:#94a3b8} input{width:100%;padding:10px;margin:6px 0 12px;border-radius:8px;border:1px solid #334155;background:#0f172a;color:white}
+button{background:#38bdf8;color:#000;border:0;padding:10px 16px;border-radius:8px;font-weight:bold;cursor:pointer;margin:4px}
+button:hover{background:#0ea5e9}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.result{font-size:20px;font-weight:bold;color:#22d3ee}
+canvas{background:#020617;border-radius:10px;width:100%;height:180px}
+.formula{background:#020617;padding:10px;border-radius:8px;color:#fbbf24;font-family:monospace;text-align:center;margin:10px 0}
+</style>
+</head>
+<body>
+<div class="container">
+<h1>⚡ Simulador de Circuitos - Física II</h1>
+
+<div class="formula">Ley de Ohm: V = I × R | Potencia: P = V × I | Serie: RT = R1+R2 | Paralelo: 1/RT = 1/R1+1/R2</div>
+
+<div class="grid">
+<div class="card">
+<h3>Datos del Circuito</h3>
+<label>Voltaje (V)</label><input id="voltage" type="number" value="12">
+<label>Resistencia 1 (Ω)</label><input id="resistor1" type="number" value="100">
+<label>Resistencia 2 (Ω)</label><input id="resistor2" type="number" value="200">
+<button onclick="calculateAll()">Calcular Todo</button>
+<button onclick="calculateSeriesResistor()">Serie</button>
+<button onclick="calculateParallelResistor()">Paralelo</button>
+<button onclick="calculatePower()">Potencia</button>
+</div>
+
+<div class="card">
+<h3>Resultados</h3>
+<p>Corriente: <span id="current" class="result">0</span> A</p>
+<p>Resistencia Total: <span id="circuitResistance" class="result">0</span> Ω</p>
+<p>Voltaje Circuito: <span id="circuitVoltage" class="result">0</span> V</p>
+<p>Potencia: <span id="circuitPower" class="result">0</span> W</p>
+<p>Serie: <span id="seriesResistance">0</span> Ω | Paralelo: <span id="parallelResistance">0</span> Ω</p>
+<canvas id="circuitCanvas"></canvas>
+</div>
+</div>
+
+<div class="card">
+<h3>📚 5 Ejercicios Resueltos Física II</h3>
+<p><b>1.</b> Si V=12V y R=100Ω, I=V/R=0.12A</p>
+<p><b>2.</b> Serie: 100+200=300Ω, con 12V => I=0.04A</p>
+<p><b>3.</b> Paralelo: (100*200)/(300)=66.67Ω, I=0.18A</p>
+<p><b>4.</b> Potencia: P=12V*0.12A=1.44W</p>
+<p><b>5.</b> Ley Kirchhoff: Suma de voltajes en malla cerrada = 0</p>
+<button onclick="modoExamen()">Modo Examen Aleatorio</button>
+<p id="examen"></p>
+</div>
+
+</div>
+
+<script>
+function drawCircuit(rt){
+ const c=document.getElementById('circuitCanvas'); const ctx=c.getContext('2d');
+ c.width=c.offsetWidth; c.height=180;
+ ctx.clearRect(0,0,c.width,c.height); ctx.strokeStyle='#38bdf8'; ctx.lineWidth=3;
+ ctx.strokeRect(20,60,60,10); ctx.fillStyle='#e2e8f0'; ctx.fillText('Batería 12V',20,40);
+ ctx.beginPath(); ctx.moveTo(80,65); ctx.lineTo(150,65); ctx.stroke();
+ ctx.strokeRect(150,50,50,30); ctx.fillText('R '+rt+'Ω',155,45);
+ ctx.beginPath(); ctx.moveTo(200,65); ctx.lineTo(300,65); ctx.lineTo(300,130); ctx.lineTo(20,130); ctx.lineTo(20,70); ctx.stroke();
+}
+
+function calculateCurrent(){
+ const v=parseFloat(document.getElementById('voltage').value)||0;
+ const r1=parseFloat(document.getElementById('resistor1').value)||0;
+ const r2=parseFloat(document.getElementById('resistor2').value)||0;
+ const total = r1+r2 || 100;
+ const current = v/total;
+ document.getElementById('current').innerText=current.toFixed(3);
+ document.getElementById('circuitResistance').innerText=total.toFixed(2);
+ document.getElementById('circuitVoltage').innerText=v.toFixed(2);
+ drawCircuit(total.toFixed(1));
+}
+function calculatePower(){
+ const v=parseFloat(document.getElementById('voltage').value)||0;
+ const c=parseFloat(document.getElementById('current').innerText)||0;
+ const power=v*c;
+ document.getElementById('circuitPower').innerText=power.toFixed(2);
+}
+function calculateSeriesResistor(){
+ const r1=parseFloat(document.getElementById('resistor1').value)||0;
+ const r2=parseFloat(document.getElementById('resistor2').value)||0;
+ const s=r1+r2;
+ document.getElementById('seriesResistance').innerText=s.toFixed(2);
+ document.getElementById('circuitResistance').innerText=s.toFixed(2);
+ drawCircuit(s.toFixed(1));
+}
+function calculateParallelResistor(){
+ const r1=parseFloat(document.getElementById('resistor1').value)||0;
+ const r2=parseFloat(document.getElementById('resistor2').value)||1;
+ const p=(r1*r2)/(r1+r2);
+ document.getElementById('parallelResistance').innerText=p.toFixed(2);
+ document.getElementById('circuitResistance').innerText=p.toFixed(2);
+ drawCircuit(p.toFixed(1));
+}
+function calculateAll(){calculateCurrent(); calculatePower();}
+function modoExamen(){
+ const v=Math.floor(Math.random()*24)+1; const r=Math.floor(Math.random()*500)+10;
+ document.getElementById('examen').innerText=`EXAMEN: Si V=${v}V y R=${r}Ω ¿Cuánto es I? Respuesta: ${(v/r).toFixed(3)} A (V/R)`;
+}
+calculateAll();
+</script>
+</body>
+</html>

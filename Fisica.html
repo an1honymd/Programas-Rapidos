@@ -77,7 +77,7 @@
       const voltage = document.getElementById("voltage").value;
       const totalResistance = resistance1 + resistance2;
       const current = voltage / totalResistance;
-      document.getElementById("current").innerText = current;
+      document.getElementById("current").innerText = current.toFixed(2);
       document.getElementById("seriesResistance").innerText = totalResistance;
       document.getElementById("circuitPower").innerText = voltage * current;
       document.getElementById("circuitVoltage").innerText = voltage;
@@ -86,8 +86,8 @@
       const current = document.getElementById("current").innerText;
       const voltage = document.getElementById("voltage").value;
       const power = voltage * current;
-      document.getElementById("power").innerText = power;
-      document.getElementById("circuitPower").innerText = power;
+      document.getElementById("power").innerText = power.toFixed(2);
+      document.getElementById("circuitPower").innerText = power.toFixed(2);
     }
     function calculateSeriesResistor() {
       const resistance1 = document.getElementById("resistor1").value;
@@ -111,13 +111,13 @@
       const voltage = document.getElementById("voltage").value;
       const current = document.getElementById("current").innerText;
       const circuitPower = voltage * current;
-      document.getElementById("circuitPower").innerText = circuitPower;
+      document.getElementById("circuitPower").innerText = circuitPower.toFixed(2);
     }
     function calculateCircuitVoltage() {
       const current = document.getElementById("current").innerText;
       const circuitResistance = document.getElementById("circuitResistance").innerText;
       const circuitVoltage = current * circuitResistance;
-      document.getElementById("circuitVoltage").innerText = circuitVoltage;
+      document.getElementById("circuitVoltage").innerText = circuitVoltage.toFixed(2);
     }
   </script>
 </body>

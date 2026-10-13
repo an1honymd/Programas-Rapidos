@@ -1,0 +1,682 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description"
+          content="VOLTIX: simulador interactivo de circuitos eléctricos y calculadora de la ley de Ohm.">
+
+    <title>VOLTIX | Electronic Circuit Simulator</title>
+
+    <link rel="stylesheet" href="estilos.css">
+
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+
+    <!-- BARRA SUPERIOR -->
+    <header class="topbar">
+
+        <a href="#" class="brand">
+            <span class="brand-icon">ϟ</span>
+
+            <span>
+                <strong>VOLTIX</strong>
+                <small>ELECTRONIC LAB</small>
+            </span>
+        </a>
+
+        <nav class="navigation">
+            <a href="#simulador" class="nav-link active">Simulador</a>
+            <a href="#calculadora" class="nav-link">Calculadora</a>
+            <a href="#historial" class="nav-link">Historial</a>
+        </nav>
+
+        <div class="header-actions">
+            <span class="system-status">
+                <span class="status-dot"></span>
+                Sistema listo
+            </span>
+
+            <button id="themeButton"
+                    class="icon-button"
+                    type="button"
+                    aria-label="Cambiar tema"
+                    title="Cambiar tema">
+                ☀
+            </button>
+        </div>
+
+    </header>
+
+
+    <!-- CONTENIDO PRINCIPAL -->
+    <main class="container">
+
+        <!-- ENCABEZADO -->
+        <section class="welcome-section">
+
+            <div>
+                <div class="eyebrow">
+                    ELECTRICAL ENGINEERING / LABORATORY
+                </div>
+
+                <h1>Simulador de <span>circuitos</span></h1>
+
+                <p class="welcome-description">
+                    Diseña circuitos, calcula magnitudes eléctricas
+                    y comprende cada resultado paso a paso.
+                </p>
+            </div>
+
+            <div class="version-badge">
+                <span class="status-dot"></span>
+                VOLTIX v1.0
+            </div>
+
+        </section>
+
+
+        <!-- TARJETAS DE RESULTADOS -->
+        <section class="metrics-grid" aria-label="Resultados eléctricos">
+
+            <article class="metric-card">
+
+                <div class="metric-header">
+                    <span class="metric-label">Corriente eléctrica</span>
+                    <span class="metric-icon blue">ϟ</span>
+                </div>
+
+                <div class="metric-value" id="metricCurrent">--</div>
+
+                <div class="metric-footer">
+                    <span class="metric-unit">Amperios (A)</span>
+                    <span class="metric-tag">I = V / R</span>
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-header">
+                    <span class="metric-label">Voltaje total</span>
+                    <span class="metric-icon purple">↗</span>
+                </div>
+
+                <div class="metric-value" id="metricVoltage">--</div>
+
+                <div class="metric-footer">
+                    <span class="metric-unit">Voltios (V)</span>
+                    <span class="metric-tag">V = I × R</span>
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-header">
+                    <span class="metric-label">Resistencia equivalente</span>
+                    <span class="metric-icon green">Ω</span>
+                </div>
+
+                <div class="metric-value" id="metricResistance">--</div>
+
+                <div class="metric-footer">
+                    <span class="metric-unit">Ohmios (Ω)</span>
+                    <span class="metric-tag">R equivalente</span>
+                </div>
+
+            </article>
+
+
+            <article class="metric-card">
+
+                <div class="metric-header">
+                    <span class="metric-label">Potencia total</span>
+                    <span class="metric-icon orange">ϟ</span>
+                </div>
+
+                <div class="metric-value" id="metricPower">--</div>
+
+                <div class="metric-footer">
+                    <span class="metric-unit">Vatios (W)</span>
+                    <span class="metric-tag">P = V × I</span>
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- SIMULADOR -->
+        <section id="simulador" class="workspace">
+
+            <!-- PANEL IZQUIERDO -->
+            <aside class="panel configuration-panel">
+
+                <div class="panel-heading">
+
+                    <div>
+                        <span class="section-number">01 / CONFIGURACIÓN</span>
+                        <h2>Parámetros</h2>
+                    </div>
+
+                    <span class="heading-icon">⚙</span>
+
+                </div>
+
+
+                <form id="circuitForm">
+
+                    <div class="form-group">
+
+                        <label for="circuitType">Tipo de circuito</label>
+
+                        <select id="circuitType">
+                            <option value="series">Resistencias en serie</option>
+                            <option value="parallel">Resistencias en paralelo</option>
+                        </select>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="voltage">
+                            Voltaje de la fuente
+                            <span class="unit-label">V</span>
+                        </label>
+
+                        <div class="input-wrapper">
+                            <input
+                                type="number"
+                                id="voltage"
+                                min="0"
+                                max="1000000"
+                                step="any"
+                                value="12"
+                                required
+                            >
+
+                            <span class="input-unit">V</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="resistor1">
+                            Resistencia R1
+                            <span class="unit-label">Ω</span>
+                        </label>
+
+                        <div class="input-wrapper">
+                            <input
+                                type="number"
+                                id="resistor1"
+                                min="0.000001"
+                                max="1000000000000"
+                                step="any"
+                                value="100"
+                                required
+                            >
+
+                            <span class="input-unit">Ω</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="form-group">
+
+                        <label for="resistor2">
+                            Resistencia R2
+                            <span class="unit-label">Ω</span>
+                        </label>
+
+                        <div class="input-wrapper">
+                            <input
+                                type="number"
+                                id="resistor2"
+                                min="0.000001"
+                                max="1000000000000"
+                                step="any"
+                                value="200"
+                                required
+                            >
+
+                            <span class="input-unit">Ω</span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="divider"></div>
+
+
+                    <button type="submit" class="primary-button">
+                        <span>ϟ</span>
+                        Calcular circuito
+                    </button>
+
+                    <button type="button" id="resetButton" class="secondary-button">
+                        ↻ Restablecer valores
+                    </button>
+
+                </form>
+
+
+                <div class="tip-box">
+
+                    <span class="tip-icon">ⓘ</span>
+
+                    <div>
+                        <strong>Consejo de laboratorio</strong>
+
+                        <p>
+                            Modifica los valores de las resistencias
+                            para observar cómo cambia el circuito.
+                        </p>
+                    </div>
+
+                </div>
+
+            </aside>
+
+
+            <!-- PANEL CENTRAL -->
+            <section class="panel circuit-panel">
+
+                <div class="panel-heading">
+
+                    <div>
+                        <span class="section-number">02 / VISUALIZACIÓN</span>
+                        <h2>Diagrama eléctrico</h2>
+                    </div>
+
+                    <span id="circuitBadge" class="circuit-badge">
+                        SERIE
+                    </span>
+
+                </div>
+
+
+                <div class="circuit-toolbar">
+
+                    <span class="toolbar-label">
+                        CIRCUITO DC
+                    </span>
+
+                    <span class="live-indicator">
+                        <span class="status-dot"></span>
+                        Vista previa
+                    </span>
+
+                </div>
+
+
+                <div class="circuit-canvas" id="circuitCanvas">
+
+                    <svg
+                        id="circuitSvg"
+                        viewBox="0 0 500 280"
+                        role="img"
+                        aria-label="Diagrama de un circuito eléctrico con una fuente de voltaje y dos resistencias"
+                    >
+
+                        <!-- Los componentes se dibujan con JavaScript -->
+
+                    </svg>
+
+                </div>
+
+
+                <div class="circuit-legend">
+
+                    <div>
+                        <span class="legend-line"></span>
+                        Conexión eléctrica
+                    </div>
+
+                    <div>
+                        <span class="legend-source">+</span>
+                        Fuente DC
+                    </div>
+
+                    <div>
+                        <span class="legend-resistor">R</span>
+                        Resistencia
+                    </div>
+
+                </div>
+
+
+                <div class="circuit-info-grid">
+
+                    <div class="circuit-info">
+
+                        <span>Configuración</span>
+
+                        <strong id="circuitTypeResult">
+                            Serie
+                        </strong>
+
+                    </div>
+
+                    <div class="circuit-info">
+
+                        <span>Componentes</span>
+
+                        <strong>2 resistencias</strong>
+
+                    </div>
+
+                    <div class="circuit-info">
+
+                        <span>Fuente de alimentación</span>
+
+                        <strong id="sourceResult">12 V DC</strong>
+
+                    </div>
+
+                </div>
+
+            </section>
+
+
+            <!-- PANEL DERECHO -->
+            <aside class="panel results-panel">
+
+                <div class="panel-heading">
+
+                    <div>
+                        <span class="section-number">03 / ANÁLISIS</span>
+                        <h2>Resultados</h2>
+                    </div>
+
+                    <span class="heading-icon">⌁</span>
+
+                </div>
+
+
+                <div id="resultMessage" class="result-message">
+                    Introduce los valores del circuito y pulsa
+                    «Calcular circuito».
+                </div>
+
+
+                <div class="result-list">
+
+                    <div class="result-row">
+
+                        <span>Resistencia equivalente</span>
+
+                        <strong id="equivalentResistance">--</strong>
+
+                    </div>
+
+                    <div class="result-row">
+
+                        <span>Corriente total</span>
+
+                        <strong id="totalCurrent">--</strong>
+
+                    </div>
+
+                    <div class="result-row">
+
+                        <span>Potencia total</span>
+
+                        <strong id="totalPower">--</strong>
+
+                    </div>
+
+                    <div class="result-row">
+
+                        <span>Voltaje en R1</span>
+
+                        <strong id="voltageR1">--</strong>
+
+                    </div>
+
+                    <div class="result-row">
+
+                        <span>Voltaje en R2</span>
+
+                        <strong id="voltageR2">--</strong>
+
+                    </div>
+
+                    <div class="result-row">
+
+                        <span>Corriente en R1</span>
+
+                        <strong id="currentR1">--</strong>
+
+                    </div>
+
+                    <div class="result-row">
+
+                        <span>Corriente en R2</span>
+
+                        <strong id="currentR2">--</strong>
+
+                    </div>
+
+                    <div class="result-row">
+
+                        <span>Potencia en R1</span>
+
+                        <strong id="powerR1">--</strong>
+
+                    </div>
+
+                    <div class="result-row">
+
+                        <span>Potencia en R2</span>
+
+                        <strong id="powerR2">--</strong>
+
+                    </div>
+
+                </div>
+
+
+                <button id="copyButton" type="button" class="secondary-button">
+                    ▣ Copiar resultados
+                </button>
+
+                <button id="exportButton" type="button" class="secondary-button">
+                    ↓ Exportar TXT
+                </button>
+
+            </aside>
+
+        </section>
+
+
+        <!-- CALCULADORA DE OHM -->
+        <section id="calculadora" class="panel ohm-panel">
+
+            <div class="panel-heading">
+
+                <div>
+                    <span class="section-number">04 / HERRAMIENTAS</span>
+                    <h2>Calculadora de la ley de Ohm</h2>
+                </div>
+
+                <span class="heading-icon">Ω</span>
+
+            </div>
+
+
+            <p class="section-description">
+                Introduce dos magnitudes conocidas para calcular la tercera.
+            </p>
+
+
+            <div class="ohm-grid">
+
+                <div class="form-group">
+
+                    <label for="ohmVoltage">Voltaje (V)</label>
+
+                    <input
+                        type="number"
+                        id="ohmVoltage"
+                        min="0"
+                        max="1000000"
+                        step="any"
+                        placeholder="Ej. 12"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="ohmCurrent">Corriente (A)</label>
+
+                    <input
+                        type="number"
+                        id="ohmCurrent"
+                        min="0"
+                        max="1000000"
+                        step="any"
+                        placeholder="Ej. 0.04"
+                    >
+
+                </div>
+
+
+                <div class="form-group">
+
+                    <label for="ohmResistance">Resistencia (Ω)</label>
+
+                    <input
+                        type="number"
+                        id="ohmResistance"
+                        min="0"
+                        max="1000000000000"
+                        step="any"
+                        placeholder="Ej. 300"
+                    >
+
+                </div>
+
+            </div>
+
+
+            <div class="ohm-actions">
+
+                <button id="calculateOhm" class="primary-button" type="button">
+                    Calcular ley de Ohm
+                </button>
+
+                <button id="clearOhm" class="secondary-button" type="button">
+                    Limpiar
+                </button>
+
+            </div>
+
+
+            <div id="ohmResult" class="ohm-result" aria-live="polite">
+                Introduce dos magnitudes positivas para calcular la tercera.
+            </div>
+
+        </section>
+
+
+        <!-- PROCEDIMIENTO -->
+        <section class="panel procedure-panel">
+
+            <div class="panel-heading">
+
+                <div>
+                    <span class="section-number">05 / APRENDIZAJE</span>
+                    <h2>Procedimiento de cálculo</h2>
+                </div>
+
+                <span class="heading-icon">∑</span>
+
+            </div>
+
+
+            <p class="section-description">
+                Revisa las fórmulas y los pasos utilizados para resolver
+                el circuito seleccionado.
+            </p>
+
+
+            <div id="calculationSteps" class="calculation-steps">
+
+                <div class="empty-state">
+                    <span>∑</span>
+
+                    <p>
+                        Los pasos del cálculo aparecerán aquí después
+                        de realizar una simulación.
+                    </p>
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- HISTORIAL -->
+        <section id="historial" class="panel history-panel">
+
+            <div class="panel-heading">
+
+                <div>
+                    <span class="section-number">06 / REGISTRO</span>
+                    <h2>Historial de simulaciones</h2>
+                </div>
+
+                <button id="clearHistory" class="text-button" type="button">
+                    Borrar historial
+                </button>
+
+            </div>
+
+
+            <div id="historyList" class="history-list">
+
+                <div class="empty-history">
+                    Todavía no hay simulaciones guardadas.
+                </div>
+
+            </div>
+
+        </section>
+
+
+        <!-- PIE DE PÁGINA -->
+        <footer class="footer">
+
+            <a href="#" class="footer-brand">
+                <span class="brand-icon">ϟ</span>
+                VOLTIX
+            </a>
+
+            <p>
+                Simulador educativo de circuitos eléctricos.
+                Calcula, experimenta y aprende.
+            </p>
+
+            <span class="footer-version">V1.0.0</span>
+
+        </footer>
+
+    </main>
+
+</body>
+</html>
+```
