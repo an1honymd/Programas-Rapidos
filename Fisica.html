@@ -7,60 +7,49 @@
       font-family: Arial, sans-serif;
       margin: 50px;
       background-color: #f0f0f0;
-      color: #333333;
+      color: #333;
     }
     .simulator {
       text-align: center;
-      background-color: #ffffff;
+      background-color: #fff;
       padding: 20px;
-      border-radius: 8px;
-      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
-
-
-
-
     .simulator input[type="number"] {
       width: 50px;
-      margin: 10px 10px 0 10px;
+      margin: 10px;
       padding: 5px;
-      border: 1px solid #cccccc;
-      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      border: none;
+      border-radius: 5px;
     }
-
-
-
     .simulator button {
-      margin: 10px 10px 0 10px;
+      margin: 10px;
       padding: 5px 10px;
-      border: 1px solid #cccccc;
-      border-radius: 4px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.1);
+      border: none;
+      border-radius: 5px;
       background-color: #007bff;
-      color: #ffffff;
+      color: #fff;
       cursor: pointer;
     }
-
-
-
-
-
-
     .simulator button:hover {
       background-color: #0056b3;
     }
     p {
       margin: 10px;
-      color: #666666;
+      font-size: 16px;
     }
     h1 {
       margin: 0;
-      color: #333333;
+      font-size: 24px;
+      color: #333;
     }
   </style>
 </head>
 <body>
   <div class="simulator">
-    <h1>simulador de circuitos electronicos</h1>
+    <h1>Electronics Circuit Simulator</h1>
     <p>Enter values for the circuit elements:</p>
     <input type="number" id="resistor1" placeholder="Resistor 1 (Ω)">
     <input type="number" id="resistor2" placeholder="Resistor 2 (Ω)">
@@ -73,6 +62,9 @@
     <p>Power (W): <span id="power"></span></p>
     <p>Series Resistance (Ω): <span id="seriesResistance"></span></p>
     <p>Parallel Resistance (Ω): <span id="parallelResistance"></span></p>
+    <p>Circuit Resistance (Ω): <span id="circuitResistance"></span></p>
+    <p>Circuit Power (W): <span id="circuitPower"></span></p>
+    <p>Circuit Voltage (V): <span id="circuitVoltage"></span></p>
   </div>
 
   <script>
@@ -83,6 +75,9 @@
       const totalResistance = resistance1 + resistance2;
       const current = voltage / totalResistance;
       document.getElementById("current").innerText = current;
+      document.getElementById("circuitResistance").innerText = totalResistance;
+      document.getElementById("circuitPower").innerText = voltage * current;
+      document.getElementById("circuitVoltage").innerText = voltage;
     }
     function calculatePower() {
       const resistance = document.getElementById("resistor1").value;
@@ -90,23 +85,21 @@
       const current = document.getElementById("current").innerText;
       const power = voltage * current;
       document.getElementById("power").innerText = power;
+      document.getElementById("circuitPower").innerText = power;
     }
     function calculateSeriesResistor() {
       const resistance1 = document.getElementById("resistor1").value;
       const resistance2 = document.getElementById("resistor2").value;
       const seriesResistance = resistance1 + resistance2;
       document.getElementById("seriesResistance").innerText = seriesResistance;
+      document.getElementById("circuitResistance").innerText = seriesResistance;
     }
     function calculateParallelResistor() {
       const resistance1 = document.getElementById("resistor1").value;
       const resistance2 = document.getElementById("resistor2").value;
       const parallelResistance = (resistance1 * resistance2) / (resistance1 + resistance2);
       document.getElementById("parallelResistance").innerText = parallelResistance;
-    }
-  </script>
-</body>
-</html>
-     
+      document.getElementById("circuitResistance").innerText = parallelResistance;
     }
   </script>
 </body>
